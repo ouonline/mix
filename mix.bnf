@@ -89,6 +89,9 @@
 <nested_import_scope> ::= <identifier> "::"
                         | <nested_import_scope> <identifier> "::"
 
+<nested_import_scope> ::= <identifier> "::"
+                        | <nested_import_scope> <identifier> "::"
+
 ; --------------------------------------------------------------------------- ;
 
 <expression> ::= <conditional_expression>
