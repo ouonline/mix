@@ -5,7 +5,6 @@
 * bison and lexer validations(working on branch `bison`)
 * hex/oct number format support
 * documentation and tutorial
-* coroutine
-* variadic generics grammar
 * emacs/vim syntax support
+* variadic generics grammar
 * llvm support
