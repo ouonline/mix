@@ -6,11 +6,11 @@
 #include "utils.h"
 
 static int print_stack_func(void* item, void* arg) {
-    uint32_t* counter = (uint32_t*)arg;
-    struct mix_type_or_value* tov = (struct mix_type_or_value*)item;
+    uint32_t* counter = arg;
+    struct mix_type_or_value* tov = item;
     struct mix_type* type = mix_type_or_value_get_type(tov);
-    printf("    * [%u] name [%s] type [%s] refcount [%u]\n", *counter,
-           make_tmp_str_s(qbuf_get_ref(&type->name)),
+    printf("    * [%u] name [%.*s] type [%s] refcount [%u]\n", *counter,
+           qbuf_size(&type->name), qbuf_data(&type->name),
            mix_get_type_name(type->value), type->refcount);
     ++(*counter);
     return 0;

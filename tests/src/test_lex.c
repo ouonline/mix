@@ -56,9 +56,10 @@ static void do_test_string(const char* str, const char* expected) {
 
     union mix_token_info token;
     mix_token_type_t ret = mix_lex_get_next_token(&lex, &token);
-    printf("get string -> [%s]\n", make_tmp_str_s(&token.s));
+    printf("get string -> [%.*s]\n", token.s.size, token.s.base);
     assert(ret == MIX_TT_LITERAL_STRING);
-    assert(strcmp(expected, make_tmp_str_s(&token.s)) == 0);
+    assert(strlen(expected) == token.s.size);
+    assert(memcmp(expected, token.s.base, token.s.size) == 0);
 }
 
 static void test_literal_string() {

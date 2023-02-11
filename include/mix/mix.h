@@ -1,9 +1,9 @@
 #ifndef __MIX_MIX_H__
 #define __MIX_MIX_H__
 
-#include "retcode.h"
+#include "mix_retcode_t.h"
 #include "mix_func_t.h"
-#include "typedef.h"
+#include "mix_type_t.h"
 #include "logger/logger.h"
 
 struct mix_context;

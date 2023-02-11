@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 struct mix_lib_info* mix_lib_info_new(const struct qbuf_ref* qname) {
-    struct mix_lib_info* info = (struct mix_lib_info*)malloc(sizeof(struct mix_lib_info));
+    struct mix_lib_info* info = malloc(sizeof(struct mix_lib_info));
     if (info) {
         qbuf_init(&info->name);
         qbuf_assign(&info->name, qname->base, qname->size);
@@ -13,7 +13,7 @@ struct mix_lib_info* mix_lib_info_new(const struct qbuf_ref* qname) {
 }
 
 static void destroy_identifier_func(void* item, void* arg) {
-    struct mix_identifier* var = (struct mix_identifier*)(*(void**)item);
+    struct mix_identifier* var = *(void**)item;
     mix_identifier_delete(var);
 }
 

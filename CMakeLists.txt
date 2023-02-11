@@ -7,6 +7,10 @@ include(FetchContent)
 set(FETCHCONTENT_QUIET OFF)
 set(FETCHCONTENT_UPDATES_DISCONNECTED ON)
 
+if(CMAKE_C_COMPILER_ID MATCHES "Clang")
+    add_compile_options(-Wno-format)
+endif()
+
 if(NOT MIX_DEPS_DIR)
     get_filename_component(MIX_DEPS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/deps ABSOLUTE)
     message("-- `MIX_DEPS_DIR` is not set. set `MIX_DEPS_DIR` to `${MIX_DEPS_DIR}`.")

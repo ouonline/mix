@@ -2,7 +2,7 @@
 #include <stdlib.h> /* malloc() */
 
 struct mix_shared_value* mix_shared_value_create() {
-    struct mix_shared_value* v = (struct mix_shared_value*)malloc(sizeof(struct mix_shared_value));
+    struct mix_shared_value* v = malloc(sizeof(struct mix_shared_value));
     if (v) {
         v->refcount = 0;
         v->type = NULL;

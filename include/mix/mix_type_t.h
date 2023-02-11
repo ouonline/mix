@@ -1,5 +1,5 @@
-#ifndef __MIX_TYPEDEF_H__
-#define __MIX_TYPEDEF_H__
+#ifndef __MIX_TYPE_T_H__
+#define __MIX_TYPE_T_H__
 
 #include <stdint.h>
 

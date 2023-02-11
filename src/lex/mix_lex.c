@@ -23,6 +23,7 @@ static const struct keyword_info g_keyword[] = {
     {"async", 5, MIX_TT_KEYWORD_async},
     {"await", 5, MIX_TT_KEYWORD_await},
     {"break", 5, MIX_TT_KEYWORD_break},
+    {"case", 4, MIX_TT_KEYWORD_case},
     {"cast", 4, MIX_TT_KEYWORD_cast},
     {"continue", 8, MIX_TT_KEYWORD_continue},
     {"do", 2, MIX_TT_KEYWORD_do},
@@ -48,8 +49,9 @@ static const struct keyword_info g_keyword[] = {
     {"override", 8, MIX_TT_KEYWORD_override},
     {"return", 6, MIX_TT_KEYWORD_return},
     {"self", 4, MIX_TT_KEYWORD_self},
-    {"str", 3, MIX_TT_KEYWORD_str},
+    {"string", 6, MIX_TT_KEYWORD_string},
     {"struct", 6, MIX_TT_KEYWORD_struct},
+    {"switch", 6, MIX_TT_KEYWORD_switch},
     {"trait", 5, MIX_TT_KEYWORD_trait},
     {"typedef", 7, MIX_TT_KEYWORD_typedef},
     {"typeof", 6, MIX_TT_KEYWORD_typeof},
@@ -300,7 +302,7 @@ static mix_token_type_t parse_identifier(struct mix_lex* lex, union mix_token_in
         .word_len = token->s.size,
         .type = MIX_TT_INVALID,
     };
-    struct keyword_info* ret = (struct keyword_info*)robin_hood_hash_lookup(&lex->keyword_hash, &word_wanted);
+    struct keyword_info* ret = robin_hood_hash_lookup(&lex->keyword_hash, &word_wanted);
     if (ret) {
         return ret->type;
     }

@@ -1,5 +1,5 @@
-#ifndef __MIX_RETCODE_H__
-#define __MIX_RETCODE_H__
+#ifndef __MIX_RETCODE_T_H__
+#define __MIX_RETCODE_T_H__
 
 #include <stdint.h>
 

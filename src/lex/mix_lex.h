@@ -1,7 +1,7 @@
 #ifndef __MIX_LEX_MIX_LEX_H__
 #define __MIX_LEX_MIX_LEX_H__
 
-#include "mix/retcode.h"
+#include "mix/mix_retcode_t.h"
 #include "cutils/qbuf_ref.h"
 #include "cutils/robin_hood_hash.h"
 
@@ -44,6 +44,7 @@ enum {
     MIX_TT_KEYWORD_async, /* reserved */
     MIX_TT_KEYWORD_await, /* reserved */
     MIX_TT_KEYWORD_break,
+    MIX_TT_KEYWORD_case, /* reserved */
     MIX_TT_KEYWORD_cast,
     MIX_TT_KEYWORD_continue,
     MIX_TT_KEYWORD_do,
@@ -69,8 +70,9 @@ enum {
     MIX_TT_KEYWORD_override, /* reserved */
     MIX_TT_KEYWORD_return,
     MIX_TT_KEYWORD_self,
-    MIX_TT_KEYWORD_str,
+    MIX_TT_KEYWORD_string,
     MIX_TT_KEYWORD_struct,
+    MIX_TT_KEYWORD_switch, /* reserved */
     MIX_TT_KEYWORD_trait,
     MIX_TT_KEYWORD_typedef,
     MIX_TT_KEYWORD_typeof, /* reserved */

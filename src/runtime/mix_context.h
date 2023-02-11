@@ -1,8 +1,8 @@
 #ifndef __MIX_RUNTIME_MIX_CONTEXT_H__
 #define __MIX_RUNTIME_MIX_CONTEXT_H__
 
-#include "mix/typedef.h"
-#include "mix/retcode.h"
+#include "mix/mix_type_t.h"
+#include "mix/mix_retcode_t.h"
 #include "cutils/vector.h"
 #include "cutils/robin_hood_hash.h"
 #include "logger/logger.h"
@@ -17,7 +17,7 @@ struct mix_context {
     struct robin_hood_hash type_hash;
 
     /* struct qbuf_ref* => struct mix_identifier* */
-    struct robin_hood_hash var_hash;
+    struct robin_hood_hash id_hash;
 
     /* available libs. name => vector of identifiers */
     struct robin_hood_hash libs;
