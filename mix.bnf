@@ -192,9 +192,7 @@
 <no_returned_value_function_declaration> ::= "func" <identifier> <optional_generics_type_specifier> "(" <function_declaration_parameter_list> ")"
 
 <function_declaration_parameter_list> ::= ""
-                                        | "..."
                                         | <parameter_and_type_list>
-                                        | <parameter_and_type_list> "," "..."
 
 <parameter_and_type_list> ::= <parameter_and_type>
                             | <parameter_and_type_list> "," <parameter_and_type>
@@ -238,9 +236,7 @@
 <no_returned_value_member_function_declaration> ::= "func" <identifier> <optional_generics_type_specifier> "(" <member_function_declaration_parameter_list> ")"
 
 <member_function_declaration_parameter_list> ::= <member_function_first_self_param>
-                                               | <member_function_first_self_param> "," "..."
                                                | <member_function_first_self_param> "," <parameter_and_type_list>
-                                               | <member_function_first_self_param> "," <parameter_and_type_list> "," "..."
                                                | <function_declaration_parameter_list>
 
 <member_function_first_self_param> ::= "self"

@@ -46,7 +46,8 @@ endif()
 #     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=undefined -fsanitize=address -fno-omit-frame-pointer")
 # endif()
 
-execute_process(COMMAND bison -d ${CMAKE_CURRENT_SOURCE_DIR}/bison/mix.y -Wcounterexamples)
+#execute_process(COMMAND bison -d ${CMAKE_CURRENT_SOURCE_DIR}/bison/mix.y -Wcounterexamples)
+execute_process(COMMAND bison -d ${CMAKE_CURRENT_SOURCE_DIR}/bison/mix.y)
 
 file(GLOB_RECURSE __MIX_SRC__ ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c ${CMAKE_CURRENT_BINARY_DIR}/mix.tab.c)
 add_library(mix_static STATIC ${__MIX_SRC__})
