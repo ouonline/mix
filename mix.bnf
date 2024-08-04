@@ -76,10 +76,10 @@
                      | <import_item_list> "," <import_item>
 
 <import_item> ::= <identifier>
-                | <nested_import_scope> <identifier>
+                | <nested_name_specifier> <identifier>
 
-<nested_import_scope> ::= <identifier> "."
-                        | <nested_import_scope> <identifier> "."
+<nested_name_specifier> ::= <identifier> "::"
+                          | <nested_name_specifier> <identifier> "::"
 
 ; --------------------------------------------------------------------------- ;
 
