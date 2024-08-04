@@ -53,14 +53,12 @@ set(__ASAN_FLAGS__ "-fsanitize=undefined -fsanitize=address -fno-omit-frame-poin
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${__ASAN_FLAGS__}")
 unset(__ASAN_FLAGS__)
 
-file(GLOB MIX_SRC ${CMAKE_CURRENT_SOURCE_DIR}/mix/*.c ${xxhash_SOURCE_DIR}/xxhash.c)
+#execute_process(COMMAND bison -d ${CMAKE_CURRENT_SOURCE_DIR}/mix.y -Wcounterexamples)
+execute_process(COMMAND bison -d ${CMAKE_CURRENT_SOURCE_DIR}/bison/mix.y)
+
+file(GLOB MIX_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c ${xxhash_SOURCE_DIR}/xxhash.c)
 add_library(mix_static STATIC ${MIX_SRC})
 target_include_directories(mix_static PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${xxhash_SOURCE_DIR})
-target_compile_features(mix_static PUBLIC cxx_std_11)
 target_link_libraries(mix_static PUBLIC cutils_static logger_static m)
-
-# ----- tests ----- #
-
-add_subdirectory(bison)

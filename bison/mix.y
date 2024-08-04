@@ -1,16 +1,15 @@
 %{
-#include "mix/lex.h"
+#include "src/lex.h"
 #include <stdio.h>
 #include <stdlib.h> // exit()
+#include "logger/logger.h"
 
-#define YYSTYPE union mix_token_info
 #include "mix.tab.h"
-
-    static struct mix_lex g_lex;
 
     /* mix token type => bison token type */
     static const int g_m2b_type[] = {
         YYUNDEF,
+        YYEOF,
         0,
 
         BISON_LITERAL_STRING,
@@ -60,23 +59,39 @@
         BISON_KEYWORD_while,
     };
 
-    static int yylex() {
-        mix_token_type_t type = mix_lex_get_next_token(&g_lex, &yylval);
-        if (type == MIX_TT_CHAR) {
-            if (yylval.c == EOF) {
-                return YYEOF;
-            }
-            return yylval.c;
+    static int yylex(YYSTYPE* lvalp, struct mix_lex* lex, const char* buf, uint32_t sz, struct logger* l) {
+        mix_token_type_t type = mix_lex_get_next_token(lex, &lvalp->token);
+        if (type == MIX_TT_EOF) {
+            return YYEOF;
         }
+
+        if (type == MIX_TT_CHAR) {
+            return lvalp->token.c;
+        }
+
         return g_m2b_type[type];
     }
 
-    static void yyerror(const char *msg) {
-        printf("error: %s\n", msg);
-        exit(-1);
+    static void yyerror(struct mix_lex* lex, const char* buf, uint32_t sz, struct logger* l, const char *msg) {
+        logger_error(l, "line [%u] column [%u] error: %s\n", lex->linenum, lex->lineoff, msg);
     }
         %}
 
+// definition of YYSTYPE
+%union {
+    union mix_token_info token;
+}
+
+// reentrant yylex()
+%define api.pure full
+
+// params of yylex()
+%lex-param {struct mix_lex* lex} {const char* buf} {uint32_t buf_sz} {struct logger* l}
+
+// params of yyparse(), should include those passed to yylex()
+%parse-param {struct mix_lex* lex} {const char* buf} {uint32_t buf_sz} {struct logger* l}
+
+ // debug settings
 %define parse.lac full
 %define parse.error detailed
 %define parse.trace
@@ -323,20 +338,3 @@ optional_struct_member_list : %empty
 | optional_struct_member_list identifier_declaration_statement
 
 %%
-
-#include "logger/stdio_logger.h"
-
-int main(int argc, char* argv[]) {
-    if (argc != 2) {
-        fprintf(stderr, "usage: %s file\n", argv[0]);
-        return -1;
-    }
-
-    struct stdio_logger logger;
-    stdio_logger_init(&logger);
-    mix_lex_init(&g_lex, argv[1]);
-    yyparse();
-    mix_lex_destroy(&g_lex);
-    stdio_logger_destroy(&logger);
-    return 0;
- }

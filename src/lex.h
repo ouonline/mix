@@ -22,7 +22,7 @@ union mix_token_info {
     struct qbuf_ref s;
 };
 
-mix_retcode_t mix_lex_init(struct mix_lex*, const char* fpath);
+mix_retcode_t mix_lex_init(struct mix_lex*, const char* buf, uint32_t sz);
 mix_token_type_t mix_lex_get_next_token(struct mix_lex*, union mix_token_info*);
 void mix_lex_destroy(struct mix_lex*);
 

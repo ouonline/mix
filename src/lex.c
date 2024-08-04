@@ -1,9 +1,8 @@
 #include "lex.h"
 #include "cutils/str_utils.h"
 #include <math.h> // pow()
-#include <stdio.h> // FILE and EOF
-#include <stdlib.h> /* malloc() */
 #include <ctype.h> /* isspace() */
+#include "utils.h"
 
 #include "xxhash.h"
 
@@ -87,45 +86,11 @@ static mix_retcode_t init_keyword_hash(struct robin_hood_hash* h) {
 
 /* -------------------------------------------------------------------------- */
 
-static unsigned long get_file_size(FILE* fp) {
-    unsigned long pos = ftell(fp);
-    fseek(fp, 0, SEEK_END);
-    unsigned long bytes = ftell(fp);
-    fseek(fp, pos, SEEK_SET);
-    return bytes;
-}
-
-static char* read_file_content(const char* fpath, unsigned long* len) {
-    FILE* fp = fopen(fpath, "r");
-    if (!fp) {
-        return NULL;
-    }
-
-    unsigned long sz = get_file_size(fp);
-    char* mem = malloc(sz);
-    if (!mem) {
-        goto end;
-    }
-
-    fread(mem, 1, sz, fp);
-    *len = sz;
-
-end:
-    fclose(fp);
-    return mem;
-}
-
-mix_retcode_t mix_lex_init(struct mix_lex* lex, const char* fpath) {
-    unsigned long file_sz = 0;
-    lex->cursor = read_file_content(fpath, &file_sz);
-    if (!lex->cursor) {
-        return MIX_RC_INVALID;
-    }
-
-    lex->buf_end = lex->cursor + file_sz;
+mix_retcode_t mix_lex_init(struct mix_lex* lex, const char* buf, uint32_t sz) {
     lex->linenum = 1;
     lex->lineoff = 1;
-
+    lex->cursor = buf;
+    lex->buf_end = lex->cursor + sz;
     return init_keyword_hash(&lex->keyword_hash);
 }
 
@@ -514,10 +479,6 @@ mix_token_type_t mix_lex_get_next_token(struct mix_lex* lex, union mix_token_inf
     return MIX_TT_INVALID;
 }
 
-
 void mix_lex_destroy(struct mix_lex* lex) {
-    if (lex->cursor) {
-        free(lex->cursor);
-    }
     robin_hood_hash_destroy(&lex->keyword_hash, NULL, NULL);
 }
