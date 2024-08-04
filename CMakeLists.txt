@@ -56,9 +56,14 @@ unset(__ASAN_FLAGS__)
 #execute_process(COMMAND bison -d ${CMAKE_CURRENT_SOURCE_DIR}/mix.y -Wcounterexamples)
 execute_process(COMMAND bison -d ${CMAKE_CURRENT_SOURCE_DIR}/bison/mix.y)
 
-file(GLOB MIX_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c ${xxhash_SOURCE_DIR}/xxhash.c)
+file(GLOB MIX_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c ${CMAKE_CURRENT_BINARY_DIR}/mix.tab.c ${xxhash_SOURCE_DIR}/xxhash.c)
 add_library(mix_static STATIC ${MIX_SRC})
 target_include_directories(mix_static PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
     ${xxhash_SOURCE_DIR})
 target_link_libraries(mix_static PUBLIC cutils_static logger_static m)
+
+# ----- tools ----- #
+
+add_subdirectory(tools)

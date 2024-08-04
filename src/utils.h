@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 static inline unsigned long get_file_size(FILE* fp) {
     unsigned long pos = ftell(fp);
@@ -12,13 +13,13 @@ static inline unsigned long get_file_size(FILE* fp) {
     return bytes;
 }
 
-static inline char* read_file_content(const char* fpath, unsigned long* len) {
+static inline char* read_file_content(const char* fpath, uint32_t* len) {
     FILE* fp = fopen(fpath, "r");
     if (!fp) {
         return NULL;
     }
 
-    unsigned long sz = get_file_size(fp);
+    uint32_t sz = get_file_size(fp);
     char* mem = malloc(sz);
     if (!mem) {
         goto end;
@@ -31,7 +32,5 @@ end:
     fclose(fp);
     return mem;
 }
-
-
 
 #endif

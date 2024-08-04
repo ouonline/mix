@@ -1,5 +1,5 @@
 %{
-#include "src/lex.h"
+#include "lex.h"
 #include <stdio.h>
 #include <stdlib.h> // exit()
 #include "logger/logger.h"
@@ -59,7 +59,7 @@
         BISON_KEYWORD_while,
     };
 
-    static int yylex(YYSTYPE* lvalp, struct mix_lex* lex, const char* buf, uint32_t sz, struct logger* l) {
+    static int yylex(YYSTYPE* lvalp, struct mix_lex* lex) {
         mix_token_type_t type = mix_lex_get_next_token(lex, &lvalp->token);
         if (type == MIX_TT_EOF) {
             return YYEOF;
@@ -72,7 +72,7 @@
         return g_m2b_type[type];
     }
 
-    static void yyerror(struct mix_lex* lex, const char* buf, uint32_t sz, struct logger* l, const char *msg) {
+    static void yyerror(struct mix_lex* lex, struct logger* l, const char *msg) {
         logger_error(l, "line [%u] column [%u] error: %s\n", lex->linenum, lex->lineoff, msg);
     }
         %}
@@ -86,10 +86,10 @@
 %define api.pure full
 
 // params of yylex()
-%lex-param {struct mix_lex* lex} {const char* buf} {uint32_t buf_sz} {struct logger* l}
+%lex-param {struct mix_lex* lex}
 
 // params of yyparse(), should include those passed to yylex()
-%parse-param {struct mix_lex* lex} {const char* buf} {uint32_t buf_sz} {struct logger* l}
+%parse-param {struct mix_lex* lex} {struct logger* l}
 
  // debug settings
 %define parse.lac full
