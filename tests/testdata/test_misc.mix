@@ -1,0 +1,5 @@
+class MyStruct {
+    var v1, v2, v3;
+    let Add = func(param1, param2) {
+    };
+}

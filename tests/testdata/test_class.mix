@@ -1,4 +1,4 @@
-struct Test {
+class Test {
     var v = 5;
     let GetValue = func (t) {
         return t.v;

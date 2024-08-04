@@ -1,9 +1,7 @@
-struct MyType {
+class MyType {
     var x;
     var y;
 }
-
-var b = {x = 3, y = 5};
 
 var c = MyType::SubType::f();
 

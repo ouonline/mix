@@ -4,6 +4,8 @@
 #include "mix.tab.h"
 
 int main(int argc, char* argv[]) {
+    int ret = 0;
+
     if (argc != 2) {
         fprintf(stderr, "usage: %s file\n", argv[0]);
         return -1;
@@ -16,18 +18,19 @@ int main(int argc, char* argv[]) {
     char* buf = read_file_content(argv[1], &file_sz);
     if (!buf) {
         logger_error(&logger.l, "cannot open [%s]\n", argv[1]);
+        ret = -1;
         goto end;
     }
 
     struct mix_lex lex;
     mix_lex_init(&lex, buf, file_sz);
 
-    yyparse(&lex, &logger.l);
+    ret = yyparse(&lex, &logger.l);
 
     free(buf);
     mix_lex_destroy(&lex);
 end:
     stdio_logger_destroy(&logger);
 
-    return 0;
+    return ret;
 }
