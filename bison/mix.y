@@ -1,6 +1,5 @@
 %{
 #include "lex.h"
-#include <stdio.h>
 #include "logger/logger.h"
 
 #include "mix.tab.h"
