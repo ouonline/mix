@@ -1,79 +1,78 @@
 %{
 #include "lex.h"
 #include "logger/logger.h"
-
 #include "mix.tab.h"
 
-    /* mix token type => bison token type */
-    static const int g_m2b_type[] = {
-        YYUNDEF,
-        YYEOF,
+/* mix token type => bison token type */
+static const int g_m2b_type[] = {
+    YYUNDEF,
+    YYEOF,
 
-        0, /* MIX_TT_CHAR */
-        BISON_LITERAL_STRING,
-        BISON_INTEGER,
-        BISON_FLOAT,
+    0, /* MIX_TT_CHAR */
+    BISON_LITERAL_STRING,
+    BISON_INTEGER,
+    BISON_FLOAT,
 
-        BISON_OP_ADD_ASSIGN,
-        BISON_OP_SUB_ASSIGN,
-        BISON_OP_MUL_ASSIGN,
-        BISON_OP_DIV_ASSIGN,
-        BISON_OP_MOD_ASSIGN,
-        BISON_OP_AND_ASSIGN,
-        BISON_OP_OR_ASSIGN,
-        BISON_OP_XOR_ASSIGN,
-        BISON_OP_LSHIFT_ASSIGN,
-        BISON_OP_RSHIFT_ASSIGN,
+    BISON_OP_ADD_ASSIGN,
+    BISON_OP_SUB_ASSIGN,
+    BISON_OP_MUL_ASSIGN,
+    BISON_OP_DIV_ASSIGN,
+    BISON_OP_MOD_ASSIGN,
+    BISON_OP_AND_ASSIGN,
+    BISON_OP_OR_ASSIGN,
+    BISON_OP_XOR_ASSIGN,
+    BISON_OP_LSHIFT_ASSIGN,
+    BISON_OP_RSHIFT_ASSIGN,
 
-        BISON_OP_LOGICAL_OR,
-        BISON_OP_LOGICAL_AND,
-        BISON_OP_EQUAL,
-        BISON_OP_NOT_EQUAL,
-        BISON_OP_LESS_EQUAL,
-        BISON_OP_GREATER_EQUAL,
-        BISON_OP_LSHIFT,
-        BISON_OP_RSHIFT,
+    BISON_OP_LOGICAL_OR,
+    BISON_OP_LOGICAL_AND,
+    BISON_OP_EQUAL,
+    BISON_OP_NOT_EQUAL,
+    BISON_OP_LESS_EQUAL,
+    BISON_OP_GREATER_EQUAL,
+    BISON_OP_LSHIFT,
+    BISON_OP_RSHIFT,
 
-        BISON_SYM_IDENTIFIER,
-        BISON_SYM_SCOPE_SPECIFIER,
+    BISON_SYM_IDENTIFIER,
+    BISON_SYM_SCOPE_SPECIFIER,
 
-        BISON_KEYWORD_as,
-        BISON_KEYWORD_break,
-        BISON_KEYWORD_class,
-        BISON_KEYWORD_continue,
-        BISON_KEYWORD_do,
-        BISON_KEYWORD_else,
-        BISON_KEYWORD_enum,
-        BISON_KEYWORD_export,
-        BISON_KEYWORD_for,
-        BISON_KEYWORD_func,
-        BISON_KEYWORD_if,
-        BISON_KEYWORD_import,
-        BISON_KEYWORD_in,
-        BISON_KEYWORD_let,
-        BISON_KEYWORD_return,
-        BISON_KEYWORD_self,
-        BISON_KEYWORD_var,
-        BISON_KEYWORD_while,
-    };
+    BISON_KEYWORD_as,
+    BISON_KEYWORD_break,
+    BISON_KEYWORD_class,
+    BISON_KEYWORD_continue,
+    BISON_KEYWORD_do,
+    BISON_KEYWORD_else,
+    BISON_KEYWORD_enum,
+    BISON_KEYWORD_export,
+    BISON_KEYWORD_for,
+    BISON_KEYWORD_func,
+    BISON_KEYWORD_if,
+    BISON_KEYWORD_import,
+    BISON_KEYWORD_in,
+    BISON_KEYWORD_let,
+    BISON_KEYWORD_return,
+    BISON_KEYWORD_self,
+    BISON_KEYWORD_var,
+    BISON_KEYWORD_while,
+};
 
-    static int yylex(YYSTYPE* lvalp, struct mix_lex* lex) {
-        mix_token_type_t type = mix_lex_get_next_token(lex, &lvalp->token);
-        if (type == MIX_TT_EOF) {
-            return YYEOF;
-        }
-
-        if (type == MIX_TT_CHAR) {
-            return lvalp->token.c;
-        }
-
-        return g_m2b_type[type];
+static int yylex(YYSTYPE* lvalp, struct mix_lex* lex) {
+    mix_token_type_t type = mix_lex_get_next_token(lex, &lvalp->token);
+    if (type == MIX_TT_EOF) {
+        return YYEOF;
     }
 
-    static void yyerror(struct mix_lex* lex, struct logger* l, const char *msg) {
-        logger_error(l, "line [%u] column [%u] error: %s\n", lex->linenum, lex->lineoff, msg);
+    if (type == MIX_TT_CHAR) {
+        return lvalp->token.c;
     }
-        %}
+
+    return g_m2b_type[type];
+}
+
+static void yyerror(struct mix_lex* lex, struct logger* l, const char *msg) {
+    logger_error(l, "line [%u] column [%u] error: %s\n", lex->linenum, lex->lineoff, msg);
+}
+%}
 
 // definition of YYSTYPE
 %union {
