@@ -85,13 +85,13 @@
 // reentrant yylex()
 %define api.pure full
 
-// params of yylex()
+ // params of yylex()
 %lex-param {struct mix_lex* lex}
 
 // params of yyparse(), should include those passed to yylex()
 %parse-param {struct mix_lex* lex} {struct logger* l}
 
- // debug settings
+// debug settings
 %define parse.lac full
 %define parse.error detailed
 %define parse.trace
@@ -200,7 +200,7 @@ optional_statement_list
 | optional_statement_list export_statement
 ;
 
- /* --------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------- */
 
 statement
 : ';'
@@ -295,7 +295,7 @@ jump_statement
 | BISON_KEYWORD_return expression ';'
 ;
 
- /* --------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------- */
 
 export_statement
 : BISON_KEYWORD_export identifier_list ';'
@@ -326,7 +326,7 @@ nested_name_specifier
 | nested_name_specifier BISON_SYM_IDENTIFIER BISON_SYM_SCOPE_SPECIFIER
 ;
 
- /* --------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------- */
 
 expression
 : conditional_expression
@@ -468,7 +468,7 @@ constant
 | BISON_LITERAL_STRING
 ;
 
- /* --------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------- */
 
 enum_declaration
 : BISON_KEYWORD_enum '{' optional_enum_member_list '}'
@@ -487,7 +487,7 @@ enum_member_list
 | enum_member_list ',' BISON_SYM_IDENTIFIER '=' BISON_INTEGER
 ;
 
- /* --------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------- */
 
 struct_definition
 : BISON_KEYWORD_struct BISON_SYM_IDENTIFIER '{' optional_struct_member_list '}'
