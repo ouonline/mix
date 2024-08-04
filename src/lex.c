@@ -1,20 +1,10 @@
 #include "lex.h"
 #include "cutils/str_utils.h"
+#include "cutils/hash_func.h"
+#include "utils.h"
 #include <math.h> // pow()
 #include <ctype.h> /* isspace() */
-#include "utils.h"
-
-#include "xxhash.h"
-
-#ifndef NDEBUG
 #include <string.h>
-static inline const char* make_tmp_str(const char* base, unsigned int size) {
-    static char buf[1024];
-    memcpy(buf, base, size);
-    buf[size] = '\0';
-    return buf;
-}
-#endif
 
 /* -------------------------------------------------------------------------- */
 
@@ -63,7 +53,7 @@ static int default_equal(const void* a, const void* b) {
 
 static unsigned long default_hash(const void* key) {
     const struct keyword_info* k = (const struct keyword_info*)key;
-    return XXH64(k->word, k->word_len, 5);
+    return bkd_hash(k->word, k->word_len);
 }
 
 static const struct robin_hood_hash_operations g_hash_ops = {

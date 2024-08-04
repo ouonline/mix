@@ -36,17 +36,6 @@ if(NOT TARGET logger_static)
     FetchContent_MakeAvailable(logger)
 endif()
 
-if(NOT xxhash_FOUND)
-    set(XXHASH_DEPS_DIR "${MIX_DEPS_DIR}")
-    FetchContent_Declare(xxhash
-        GIT_REPOSITORY "https://github.com/Cyan4973/xxHash.git"
-        GIT_TAG dev
-        SOURCE_DIR ${XXHASH_DEPS_DIR}/xxhash
-        BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/xxhash-build
-        SUBBUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/xxhash-subbuild)
-    FetchContent_MakeAvailable(xxhash)
-endif()
-
 # ----- targets ----- #
 
 set(__ASAN_FLAGS__ "-fsanitize=undefined -fsanitize=address -fno-omit-frame-pointer")
@@ -56,12 +45,11 @@ unset(__ASAN_FLAGS__)
 #execute_process(COMMAND bison -d ${CMAKE_CURRENT_SOURCE_DIR}/mix.y -Wcounterexamples)
 execute_process(COMMAND bison -d ${CMAKE_CURRENT_SOURCE_DIR}/bison/mix.y)
 
-file(GLOB MIX_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c ${CMAKE_CURRENT_BINARY_DIR}/mix.tab.c ${xxhash_SOURCE_DIR}/xxhash.c)
+file(GLOB MIX_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c ${CMAKE_CURRENT_BINARY_DIR}/mix.tab.c)
 add_library(mix_static STATIC ${MIX_SRC})
 target_include_directories(mix_static PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${xxhash_SOURCE_DIR})
+    ${CMAKE_CURRENT_BINARY_DIR})
 target_link_libraries(mix_static PUBLIC cutils_static logger_static m)
 
 # ----- tools ----- #

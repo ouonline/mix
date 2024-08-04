@@ -41,6 +41,7 @@
 
         BISON_KEYWORD_as,
         BISON_KEYWORD_break,
+        BISON_KEYWORD_class,
         BISON_KEYWORD_continue,
         BISON_KEYWORD_do,
         BISON_KEYWORD_else,
@@ -54,7 +55,6 @@
         BISON_KEYWORD_let,
         BISON_KEYWORD_return,
         BISON_KEYWORD_self,
-        BISON_KEYWORD_struct,
         BISON_KEYWORD_var,
         BISON_KEYWORD_while,
     };
@@ -125,6 +125,7 @@
 
 %token BISON_KEYWORD_as
 %token BISON_KEYWORD_break
+%token BISON_KEYWORD_class
 %token BISON_KEYWORD_continue
 %token BISON_KEYWORD_do
 %token BISON_KEYWORD_else
@@ -138,7 +139,6 @@
 %token BISON_KEYWORD_let
 %token BISON_KEYWORD_return
 %token BISON_KEYWORD_self
-%token BISON_KEYWORD_struct
 %token BISON_KEYWORD_var
 %token BISON_KEYWORD_while
 
@@ -171,6 +171,7 @@
 
 %type <token> BISON_KEYWORD_as
 %type <token> BISON_KEYWORD_break
+%type <token> BISON_KEYWORD_class
 %type <token> BISON_KEYWORD_continue
 %type <token> BISON_KEYWORD_do
 %type <token> BISON_KEYWORD_else
@@ -184,7 +185,6 @@
 %type <token> BISON_KEYWORD_let
 %type <token> BISON_KEYWORD_return
 %type <token> BISON_KEYWORD_self
-%type <token> BISON_KEYWORD_struct
 %type <token> BISON_KEYWORD_var
 %type <token> BISON_KEYWORD_while
 
@@ -205,7 +205,7 @@ optional_statement_list
 statement
 : ';'
 | expression ';'
-| identifier_declaration_statement
+| variable_declaration_statement
 | assignment_statement
 | selection_statement
 | iteration_statement
@@ -213,18 +213,17 @@ statement
 | import_statement
 | compound_statement
 | enum_declaration
-| struct_definition
+| class_definition
+| function_definition
 ;
 
-identifier_declaration_statement
+variable_declaration_statement
 : BISON_KEYWORD_var variable_declaration_list ';'
 | BISON_KEYWORD_let variable_declaration_list ';'
 ;
 
 assignment_statement
-: variable '=' expression ';'
-| variable '=' braced_initializer ';'
-| variable assignment_operator expression ';'
+: variable assignment_operator expression ';'
 ;
 
 variable
@@ -234,7 +233,8 @@ variable
 ;
 
 assignment_operator
-: BISON_OP_ADD_ASSIGN
+: '='
+| BISON_OP_ADD_ASSIGN
 | BISON_OP_SUB_ASSIGN
 | BISON_OP_MUL_ASSIGN
 | BISON_OP_DIV_ASSIGN
@@ -251,25 +251,9 @@ variable_declaration_list
 | variable_declaration_list ',' variable_declaration
 ;
 
-initializer_clause
-: BISON_SYM_IDENTIFIER '=' expression
-| BISON_SYM_IDENTIFIER '=' braced_initializer
-;
-
 variable_declaration
 : BISON_SYM_IDENTIFIER
-| initializer_clause
-;
-
-braced_initializer
-: '{' '}'
-| '{' initializer_clause_list '}'
-| '{' initializer_clause_list ',' '}'
-;
-
-initializer_clause_list
-: initializer_clause
-| initializer_clause_list ',' initializer_clause
+| BISON_SYM_IDENTIFIER '=' expression
 ;
 
 selection_statement
@@ -299,11 +283,6 @@ jump_statement
 
 export_statement
 : BISON_KEYWORD_export identifier_list ';'
-;
-
-identifier_list
-: BISON_SYM_IDENTIFIER
-| identifier_list ',' BISON_SYM_IDENTIFIER
 ;
 
 import_statement
@@ -438,28 +417,21 @@ postfix_expression
 | '(' expression ')'
 | lambda
 | nested_name_specifier BISON_SYM_IDENTIFIER
-| postfix_expression '(' expression_or_braced_initializer_list ')'
+| postfix_expression '(' expression_list ')'
 | postfix_expression '(' ')'
 ;
 
 lambda
-: function_declaration compound_statement
+: function_type compound_statement
 ;
 
-function_declaration
-: BISON_KEYWORD_func '(' function_declaration_parameter_list ')'
+function_type
+: BISON_KEYWORD_func '(' optional_identifier_list ')'
 ;
 
-function_declaration_parameter_list
-: %empty
-| identifier_list
-;
-
-expression_or_braced_initializer_list
+expression_list
 : expression
-| braced_initializer
-| expression_or_braced_initializer_list ',' expression
-| expression_or_braced_initializer_list ',' braced_initializer
+| expression_list ',' expression
 ;
 
 constant
@@ -489,13 +461,54 @@ enum_member_list
 
 /* --------------------------------------------------------------------------- */
 
-struct_definition
-: BISON_KEYWORD_struct BISON_SYM_IDENTIFIER '{' optional_struct_member_list '}'
+class_definition
+: BISON_KEYWORD_class BISON_SYM_IDENTIFIER '{' optional_class_member_list '}'
 ;
 
-optional_struct_member_list
+optional_class_member_list
 : %empty
-| optional_struct_member_list identifier_declaration_statement
+| optional_class_member_list class_member
+;
+
+class_member
+: member_function_definition
+| variable_declaration_statement
+;
+
+member_function_definition
+: member_function_declaration compound_statement
+;
+
+member_function_declaration
+: BISON_KEYWORD_func BISON_SYM_IDENTIFIER '(' member_function_parameter_list ')'
+;
+
+member_function_parameter_list
+: BISON_KEYWORD_self
+| BISON_KEYWORD_self ',' identifier_list
+| optional_identifier_list
+;
+
+/* --------------------------------------------------------------------------- */
+
+function_definition
+: function_declaration compound_statement
+;
+
+function_declaration
+: BISON_KEYWORD_func BISON_SYM_IDENTIFIER '(' optional_identifier_list ')'
+;
+
+/* --------------------------------------------------------------------------- */
+
+optional_identifier_list
+: %empty
+| identifier_list
+;
+
+identifier_list
+: BISON_SYM_IDENTIFIER
+| identifier_list ',' BISON_SYM_IDENTIFIER
 ;
 
 %%

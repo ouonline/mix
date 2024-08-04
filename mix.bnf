@@ -8,7 +8,7 @@
 
 <statement> ::= ";"
               | <expression> ";"
-              | <identifier_declaration_statement>
+              | <variable_declaration_statement>
               | <assignment_statement>
               | <selection_statement>
               | <iteration_statement>
@@ -16,36 +16,25 @@
               | <import_statement>
               | <compound_statement>
               | <enum_declaration>
-              | <struct_definition>
+              | <class_definition>
+              | <function_definition>
 
-<identifier_declaration_statement> ::= "var" <variable_declaration_list> ";"
-                                     | "let" <variable_declaration_list> ";"
+<variable_declaration_statement> ::= "var" <variable_declaration_list> ";"
+                                   | "let" <variable_declaration_list> ";"
 
-<assignment_statement> ::= <variable> "=" <expression> ";"
-                         | <variable> "=" <braced_initializer> ";"
-                         | <variable> <assignment_operator> <expression> ";"
+<assignment_statement> ::= <variable> <assignment_operator> <expression> ";"
 
 <variable> ::= <identifier>
              | <postfix_expression> "[" <expression> "]"
              | <postfix_expression> "." <identifier>
 
-<assignment_operator> ::= "+=" | "-=" | "*=" | "/=" | "%=" | "&=" | "|=" | "^=" | "<<=" | ">>="
+<assignment_operator> ::= "=" | "+=" | "-=" | "*=" | "/=" | "%=" | "&=" | "|=" | "^=" | "<<=" | ">>="
 
 <variable_declaration_list> ::= <variable_declaration>
                               | <variable_declaration_list> "," <variable_declaration>
 
-<initializer_clause> ::= <identifier> "=" <expression>
-                       | <identifier> "=" <braced_initializer>
-
 <variable_declaration> ::= <identifier>
-                         | <initializer_clause>
-
-<braced_initializer> ::= "{" "}"
-                       | "{" <initializer_clause_list> "}"
-                       | "{" <initializer_clause_list> "," "}"
-
-<initializer_clause_list> ::= <initializer_clause>
-                            | <initializer_clause_list> "," <initializer_clause>
+                         | <identifier> "=" <expression>
 
 <selection_statement> ::= "if" <expression> <compound_statement>
                         | "if" <expression> <compound_statement> "else" <selection_statement>
@@ -65,9 +54,6 @@
 ; --------------------------------------------------------------------------- ;
 
 <export_statement> ::= "export" <identifier_list> ";"
-
-<identifier_list> ::= <identifier>
-                    | <identifier_list> "," <identifier>
 
 <import_statement> ::= "import" <import_item_list> ";"
                      | "import" <import_item> "as" <identifier> ";"
@@ -143,20 +129,15 @@
                        | "(" <expression> ")"
                        | <lambda>
                        | <nested_name_specifier> <identifier>
-                       | <postfix_expression> "(" <expression_or_braced_initializer_list> ")"
+                       | <postfix_expression> "(" <expression_list> ")"
                        | <postfix_expression> "(" ")"
 
-<lambda> ::= <function_declaration> <compound_statement>
+<lambda> ::= <function_type> <compound_statement>
 
-<function_declaration> ::= "func" "(" <function_declaration_parameter_list> ")"
+<function_type> ::= "func" "(" <optional_identifier_list> ")"
 
-<function_declaration_parameter_list> ::= ""
-                                        | <identifier_list>
-
-<expression_or_braced_initializer_list> ::= <expression>
-                                          | <braced_initializer>
-                                          | <expression_or_braced_initializer_list> "," <expression>
-                                          | <expression_or_braced_initializer_list> "," <braced_initializer>
+<expression_list> ::= <expression>
+                    | <expression_list> "," <expression>
 
 <constant> ::= <integer>
              | <floating_point>
@@ -177,12 +158,35 @@
 
 ; --------------------------------------------------------------------------- ;
 
-<struct_definition> ::= "struct" <identifier> "{" <optional_struct_member_list> "}"
+<class_definition> ::= "class" <identifier> "{" <optional_class_member_list> "}"
 
-<optional_struct_member_list> ::= ""
-                                | <optional_struct_member_list> <identifier_declaration_statement>
+<optional_class_member_list> ::= ""
+                               | <optional_class_member_list> <class_member>
+
+<class_member> ::= <member_function_definition>
+                 | <variable_declaration_statement>
+
+<member_function_definition> ::= <member_function_declaration> <compound_statement>
+
+<member_function_declaration> ::= "func" <identifier> "(" <member_function_parameter_list> ")"
+
+<member_function_parameter_list> ::= "self"
+                                   | "self" "," <identifier_list>
+                                   | <optional_identifier_list>
 
 ; --------------------------------------------------------------------------- ;
+
+<function_definition> ::= <function_declaration> <compound_statement>
+
+<function_declaration> ::= "func" <identifier> "(" <optional_identifier_list> ")"
+
+; --------------------------------------------------------------------------- ;
+
+<optional_identifier_list> ::= ""
+                             | <identifier_list>
+
+<identifier_list> ::= <identifier>
+                    | <identifier_list> "," <identifier>
 
 <identifier> ::= <character_of_identifier> <character_or_digit_sequence>
 
