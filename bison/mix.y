@@ -40,23 +40,24 @@
         BISON_SYM_IDENTIFIER,
         BISON_SYM_SCOPE_SPECIFIER,
 
-        BISON_KEYWORD_var,
-        BISON_KEYWORD_let,
-        BISON_KEYWORD_if,
-        BISON_KEYWORD_else,
-        BISON_KEYWORD_while,
-        BISON_KEYWORD_do,
-        BISON_KEYWORD_for,
-        BISON_KEYWORD_in,
-        BISON_KEYWORD_continue,
-        BISON_KEYWORD_break,
-        BISON_KEYWORD_return,
-        BISON_KEYWORD_export,
-        BISON_KEYWORD_import,
         BISON_KEYWORD_as,
-        BISON_KEYWORD_func,
+        BISON_KEYWORD_break,
+        BISON_KEYWORD_continue,
+        BISON_KEYWORD_do,
+        BISON_KEYWORD_else,
         BISON_KEYWORD_enum,
+        BISON_KEYWORD_export,
+        BISON_KEYWORD_for,
+        BISON_KEYWORD_func,
+        BISON_KEYWORD_if,
+        BISON_KEYWORD_import,
+        BISON_KEYWORD_in,
+        BISON_KEYWORD_let,
+        BISON_KEYWORD_return,
+        BISON_KEYWORD_self,
         BISON_KEYWORD_struct,
+        BISON_KEYWORD_var,
+        BISON_KEYWORD_while,
     };
 
     static int yylex() {
@@ -107,23 +108,24 @@
 %token BISON_SYM_IDENTIFIER
 %token BISON_SYM_SCOPE_SPECIFIER
 
-%token BISON_KEYWORD_var
-%token BISON_KEYWORD_let
-%token BISON_KEYWORD_if
-%token BISON_KEYWORD_else
-%token BISON_KEYWORD_while
-%token BISON_KEYWORD_do
-%token BISON_KEYWORD_for
-%token BISON_KEYWORD_in
-%token BISON_KEYWORD_continue
-%token BISON_KEYWORD_break
-%token BISON_KEYWORD_return
-%token BISON_KEYWORD_export
-%token BISON_KEYWORD_import
 %token BISON_KEYWORD_as
-%token BISON_KEYWORD_func
+%token BISON_KEYWORD_break
+%token BISON_KEYWORD_continue
+%token BISON_KEYWORD_do
+%token BISON_KEYWORD_else
 %token BISON_KEYWORD_enum
+%token BISON_KEYWORD_export
+%token BISON_KEYWORD_for
+%token BISON_KEYWORD_func
+%token BISON_KEYWORD_if
+%token BISON_KEYWORD_import
+%token BISON_KEYWORD_in
+%token BISON_KEYWORD_let
+%token BISON_KEYWORD_return
+%token BISON_KEYWORD_self
 %token BISON_KEYWORD_struct
+%token BISON_KEYWORD_var
+%token BISON_KEYWORD_while
 
 %%
 
@@ -332,7 +334,7 @@ int main(int argc, char* argv[]) {
 
     struct stdio_logger logger;
     stdio_logger_init(&logger);
-    mix_lex_init(&g_lex, argv[1], &logger.l);
+    mix_lex_init(&g_lex, argv[1]);
     yyparse();
     mix_lex_destroy(&g_lex);
     stdio_logger_destroy(&logger);

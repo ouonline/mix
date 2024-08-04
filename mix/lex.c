@@ -27,41 +27,22 @@ struct keyword_info {
 
 static const struct keyword_info g_keyword[] = {
     {"as", 2, MIX_TT_KEYWORD_as},
-    {"async", 5, MIX_TT_KEYWORD_async},
-    {"await", 5, MIX_TT_KEYWORD_await},
     {"break", 5, MIX_TT_KEYWORD_break},
-    {"cast", 4, MIX_TT_KEYWORD_cast},
-    {"const", 5, MIX_TT_KEYWORD_const},
     {"continue", 8, MIX_TT_KEYWORD_continue},
     {"do", 2, MIX_TT_KEYWORD_do},
     {"else", 4, MIX_TT_KEYWORD_else},
     {"enum", 4, MIX_TT_KEYWORD_enum},
     {"export", 6, MIX_TT_KEYWORD_export},
-    {"extern", 6, MIX_TT_KEYWORD_extern},
-    {"f32", 3, MIX_TT_KEYWORD_f32},
-    {"f64", 3, MIX_TT_KEYWORD_f64},
-    {"final", 5, MIX_TT_KEYWORD_final},
     {"for", 3, MIX_TT_KEYWORD_for},
     {"func", 4, MIX_TT_KEYWORD_func},
-    {"i16", 3, MIX_TT_KEYWORD_i16},
-    {"i32", 3, MIX_TT_KEYWORD_i32},
-    {"i64", 3, MIX_TT_KEYWORD_i64},
-    {"i8", 2, MIX_TT_KEYWORD_i8},
     {"if", 2, MIX_TT_KEYWORD_if},
-    {"impl", 4, MIX_TT_KEYWORD_impl},
     {"import", 6, MIX_TT_KEYWORD_import},
     {"in", 2, MIX_TT_KEYWORD_in},
-    {"marco", 5, MIX_TT_KEYWORD_marco},
-    {"override", 8, MIX_TT_KEYWORD_override},
     {"return", 6, MIX_TT_KEYWORD_return},
     {"self", 4, MIX_TT_KEYWORD_self},
     {"struct", 6, MIX_TT_KEYWORD_struct},
-    {"trait", 5, MIX_TT_KEYWORD_trait},
-    {"typeof", 6, MIX_TT_KEYWORD_typeof},
     {"var", 3, MIX_TT_KEYWORD_var},
-    {"virtual", 7, MIX_TT_KEYWORD_virtual},
     {"while", 5, MIX_TT_KEYWORD_while},
-    {"yield", 5, MIX_TT_KEYWORD_yield},
     {NULL, 0, MIX_TT_INVALID},
 };
 
@@ -114,17 +95,15 @@ static unsigned long get_file_size(FILE* fp) {
     return bytes;
 }
 
-static char* read_file_content(const char* fpath, unsigned long* len, struct logger* l) {
+static char* read_file_content(const char* fpath, unsigned long* len) {
     FILE* fp = fopen(fpath, "r");
     if (!fp) {
-        logger_error(l, "open file [%s] failed.", fpath);
         return NULL;
     }
 
     unsigned long sz = get_file_size(fp);
     char* mem = malloc(sz);
     if (!mem) {
-        logger_error(l, "alloc [%lu] bytes failed.", sz);
         goto end;
     }
 
@@ -136,19 +115,16 @@ end:
     return mem;
 }
 
-mix_retcode_t mix_lex_init(struct mix_lex* lex, const char* fpath, struct logger* l) {
+mix_retcode_t mix_lex_init(struct mix_lex* lex, const char* fpath) {
     unsigned long file_sz = 0;
-    lex->buf_begin = read_file_content(fpath, &file_sz, l);
-    if (!lex->buf_begin) {
-        logger_error(l, "read content of file [%s] failed.", fpath);
+    lex->cursor = read_file_content(fpath, &file_sz);
+    if (!lex->cursor) {
         return MIX_RC_INVALID;
     }
 
-    lex->cursor = lex->buf_begin;
-    lex->buf_end = lex->buf_begin + file_sz;
+    lex->buf_end = lex->cursor + file_sz;
     lex->linenum = 1;
     lex->lineoff = 1;
-    lex->logger = l;
 
     return init_keyword_hash(&lex->keyword_hash);
 }
@@ -172,11 +148,6 @@ static inline void forward(struct mix_lex* lex) {
     ++lex->cursor;
 }
 
-static inline void forward2(struct mix_lex* lex) {
-    lex->cursor += 2;
-    lex->lineoff += 2;
-}
-
 static inline void backward(struct mix_lex* lex) {
     --lex->cursor;
     --lex->lineoff;
@@ -191,16 +162,25 @@ static mix_token_type_t parse_literal_string(struct mix_lex* lex, union mix_toke
         if (c == EOF) {
             return MIX_TT_INVALID;
         }
-        /* TODO parse escaped char */
+
+        /* TODO handle escaped chars */
         if (c == '\\') {
-            forward2(lex); /* skip '\\' and the escaped char */
+            forward(lex); /* skip '\\' */
             c = current(lex);
+            if (c == EOF) {
+                return MIX_TT_INVALID;
+            }
+
+            forward(lex); /* skip the escaped char */
+            continue;
         }
+
         if (c == '"') {
-            token->s.size = lex->cursor - (const char*)(token->s.base);
+            token->s.size = lex->cursor - (const char*)token->s.base;
             forward(lex);
             return MIX_TT_LITERAL_STRING;
         }
+
         forward(lex);
     }
 
@@ -305,14 +285,18 @@ static mix_token_type_t parse_number(struct mix_lex* lex, union mix_token_info* 
 
         int len = lex->cursor - begin;
         if (exp_coeff == 1) {
-            exp_value_for_int = pow(10, ndec2long(begin, lex->cursor - begin));
+            if (type == MIX_TT_FLOAT) {
+                exp_value_for_float = pow(10, ndec2long(begin, lex->cursor - begin));
+            } else {
+                exp_value_for_int = pow(10, ndec2long(begin, lex->cursor - begin));
+            }
         } else {
             exp_value_for_float = (double)1 / pow(10, ndec2long(begin, lex->cursor - begin));
         }
     }
 
     if (type == MIX_TT_INTEGER) {
-        token->l = int_value * exp_value_for_int;
+        token->i = int_value * exp_value_for_int;
     } else if (type == MIX_TT_FLOAT) {
         token->d = fract_value * exp_value_for_float;
     }
@@ -373,10 +357,6 @@ mix_token_type_t mix_lex_get_next_token(struct mix_lex* lex, union mix_token_inf
                     token->s.size = 2;
                     forward(lex);
                     return MIX_TT_OP_LESS_EQUAL;
-                } else if (c2 == '|') {
-                    token->s.size = 2;
-                    forward(lex);
-                    return MIX_TT_SYM_GENERICS_LEFT_MARK;
                 }
                 break;
             }
@@ -410,10 +390,6 @@ mix_token_type_t mix_lex_get_next_token(struct mix_lex* lex, union mix_token_inf
                     token->s.size = 2;
                     forward(lex);
                     return MIX_TT_OP_SUB_ASSIGN;
-                } if (c2 == '>') {
-                    token->s.size = 2;
-                    forward(lex);
-                    return MIX_TT_SYM_RIGHT_ARROW;
                 }
                 break;
             }
@@ -472,10 +448,6 @@ mix_token_type_t mix_lex_get_next_token(struct mix_lex* lex, union mix_token_inf
                     token->s.size = 2;
                     forward(lex);
                     return MIX_TT_OP_LOGICAL_OR;
-                } else if (c2 == '>') {
-                    token->s.size = 2;
-                    forward(lex);
-                    return MIX_TT_SYM_GENERICS_RIGHT_MARK;
                 }
                 break;
             }
@@ -521,16 +493,6 @@ mix_token_type_t mix_lex_get_next_token(struct mix_lex* lex, union mix_token_inf
             }
             case '.': {
                 forward(lex);
-                if (current(lex) == '.') {
-                    forward(lex);
-                    if (current(lex) == '.') {
-                        token->s.base = lex->cursor - 3;
-                        token->s.size = 3;
-                        forward(lex);
-                        return MIX_TT_SYM_VARIADIC_ARG;
-                    }
-                    backward(lex);
-                }
                 break;
             }
             default: {
@@ -541,7 +503,10 @@ mix_token_type_t mix_lex_get_next_token(struct mix_lex* lex, union mix_token_inf
             }
         }
 
-        /* returns current char and move to the next */
+        if (c == EOF) {
+            return MIX_TT_EOF;
+        }
+
         token->c = c;
         return MIX_TT_CHAR;
     }
@@ -549,9 +514,10 @@ mix_token_type_t mix_lex_get_next_token(struct mix_lex* lex, union mix_token_inf
     return MIX_TT_INVALID;
 }
 
+
 void mix_lex_destroy(struct mix_lex* lex) {
-    if (lex->buf_begin) {
-        free(lex->buf_begin);
+    if (lex->cursor) {
+        free(lex->cursor);
     }
     robin_hood_hash_destroy(&lex->keyword_hash, NULL, NULL);
 }
