@@ -1,6 +1,6 @@
 class Test {
     var v = 5;
-    let GetValue = func (t) {
+    func GetValue(t) {
         return t.v;
-    };
+    }
 }

@@ -2,8 +2,8 @@ var f = func (i, f) {
     return i + f + tmp;
 };
 
-var g = func (k) {};
+let g = func (k) {};
 
-var tmp = FuncCall(func (i32, i32) {}, func (a, b) { return other_type; });
+var tmp = FuncCall(func (a, b) {}, func (a, b) { return other_type; });
 
 func(){}();
