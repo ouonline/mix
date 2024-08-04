@@ -10,8 +10,8 @@
     static const int g_m2b_type[] = {
         YYUNDEF,
         YYEOF,
-        0,
 
+        0, /* MIX_TT_CHAR */
         BISON_LITERAL_STRING,
         BISON_INTEGER,
         BISON_FLOAT,

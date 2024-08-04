@@ -35,6 +35,7 @@ enum {
 
     MIX_TT_KEYWORD_as,
     MIX_TT_KEYWORD_break,
+    MIX_TT_KEYWORD_class,
     MIX_TT_KEYWORD_continue,
     MIX_TT_KEYWORD_do,
     MIX_TT_KEYWORD_else,
@@ -48,7 +49,6 @@ enum {
     MIX_TT_KEYWORD_let,
     MIX_TT_KEYWORD_return,
     MIX_TT_KEYWORD_self,
-    MIX_TT_KEYWORD_struct,
     MIX_TT_KEYWORD_var,
     MIX_TT_KEYWORD_while,
 };

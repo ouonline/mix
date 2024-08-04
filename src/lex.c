@@ -17,6 +17,7 @@ struct keyword_info {
 static const struct keyword_info g_keyword[] = {
     {"as", 2, MIX_TT_KEYWORD_as},
     {"break", 5, MIX_TT_KEYWORD_break},
+    {"class", 5, MIX_TT_KEYWORD_class},
     {"continue", 8, MIX_TT_KEYWORD_continue},
     {"do", 2, MIX_TT_KEYWORD_do},
     {"else", 4, MIX_TT_KEYWORD_else},
@@ -30,7 +31,6 @@ static const struct keyword_info g_keyword[] = {
     {"let", 3, MIX_TT_KEYWORD_let},
     {"return", 6, MIX_TT_KEYWORD_return},
     {"self", 4, MIX_TT_KEYWORD_self},
-    {"struct", 6, MIX_TT_KEYWORD_struct},
     {"var", 3, MIX_TT_KEYWORD_var},
     {"while", 5, MIX_TT_KEYWORD_while},
     {NULL, 0, MIX_TT_INVALID},
