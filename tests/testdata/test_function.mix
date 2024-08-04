@@ -1,2 +1,4 @@
 let Echo = func (i) {
 };
+
+func Echo(i) {}
