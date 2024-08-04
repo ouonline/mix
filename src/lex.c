@@ -37,6 +37,7 @@ static const struct keyword_info g_keyword[] = {
     {"if", 2, MIX_TT_KEYWORD_if},
     {"import", 6, MIX_TT_KEYWORD_import},
     {"in", 2, MIX_TT_KEYWORD_in},
+    {"let", 3, MIX_TT_KEYWORD_let},
     {"return", 6, MIX_TT_KEYWORD_return},
     {"self", 4, MIX_TT_KEYWORD_self},
     {"struct", 6, MIX_TT_KEYWORD_struct},
@@ -45,8 +46,8 @@ static const struct keyword_info g_keyword[] = {
     {NULL, 0, MIX_TT_INVALID},
 };
 
-static const void* default_getkey(const void* data) {
-    return data;
+static const void* default_getkey(const void* value) {
+    return value;
 }
 
 static int default_equal(const void* a, const void* b) {
@@ -54,10 +55,10 @@ static int default_equal(const void* a, const void* b) {
     const struct keyword_info* kb = (const struct keyword_info*)b;
 
     if (ka->word_len != kb->word_len) {
-        return 0;
+        return 1;
     }
 
-    return (memcmp(ka->word, kb->word, ka->word_len) == 0);
+    return memcmp(ka->word, kb->word, ka->word_len);
 }
 
 static unsigned long default_hash(const void* key) {

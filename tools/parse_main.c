@@ -15,13 +15,19 @@ int main(int argc, char* argv[]) {
     uint32_t file_sz = 0;
     char* buf = read_file_content(argv[1], &file_sz);
     if (!buf) {
-        return -1;
+        logger_error(&logger.l, "cannot open [%s]\n", argv[1]);
+        goto end;
     }
 
     struct mix_lex lex;
     mix_lex_init(&lex, buf, file_sz);
+
     yyparse(&lex, &logger.l);
+
+    free(buf);
     mix_lex_destroy(&lex);
+end:
+    stdio_logger_destroy(&logger);
 
     return 0;
 }
