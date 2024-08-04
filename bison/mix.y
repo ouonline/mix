@@ -203,8 +203,8 @@ optional_statement_list
  /* --------------------------------------------------------------------------- */
 
 statement
-: ";"
-| expression ";"
+: ';'
+| expression ';'
 | identifier_declaration_statement
 | assignment_statement
 | selection_statement
@@ -217,20 +217,20 @@ statement
 ;
 
 identifier_declaration_statement
-: BISON_KEYWORD_var variable_declaration_list ";"
-| BISON_KEYWORD_let variable_declaration_list ";"
+: BISON_KEYWORD_var variable_declaration_list ';'
+| BISON_KEYWORD_let variable_declaration_list ';'
 ;
 
 assignment_statement
-: variable "=" expression ";"
-| variable "=" braced_initializer ";"
-| variable assignment_operator expression ";"
+: variable '=' expression ';'
+| variable '=' braced_initializer ';'
+| variable assignment_operator expression ';'
 ;
 
 variable
 : BISON_SYM_IDENTIFIER
-| postfix_expression "[" expression "]"
-| postfix_expression "." BISON_SYM_IDENTIFIER
+| postfix_expression '[' expression ']'
+| postfix_expression '.' BISON_SYM_IDENTIFIER
 ;
 
 assignment_operator
@@ -248,12 +248,12 @@ assignment_operator
 
 variable_declaration_list
 : variable_declaration
-| variable_declaration_list "," variable_declaration
+| variable_declaration_list ',' variable_declaration
 ;
 
 initializer_clause
-: BISON_SYM_IDENTIFIER "=" expression
-| BISON_SYM_IDENTIFIER "=" braced_initializer
+: BISON_SYM_IDENTIFIER '=' expression
+| BISON_SYM_IDENTIFIER '=' braced_initializer
 ;
 
 variable_declaration
@@ -262,14 +262,14 @@ variable_declaration
 ;
 
 braced_initializer
-: "{" "}"
-| "{" initializer_clause_list "}"
-| "{" initializer_clause_list "," "}"
+: '{' '}'
+| '{' initializer_clause_list '}'
+| '{' initializer_clause_list ',' '}'
 ;
 
 initializer_clause_list
 : initializer_clause
-| initializer_clause_list "," initializer_clause
+| initializer_clause_list ',' initializer_clause
 ;
 
 selection_statement
@@ -280,40 +280,40 @@ selection_statement
 
 iteration_statement
 : BISON_KEYWORD_while expression compound_statement
-| BISON_KEYWORD_do compound_statement BISON_KEYWORD_while expression ";"
+| BISON_KEYWORD_do compound_statement BISON_KEYWORD_while expression ';'
 | BISON_KEYWORD_for BISON_SYM_IDENTIFIER BISON_KEYWORD_in expression compound_statement
 ;
 
 compound_statement
-: "{" optional_statement_list "}"
+: '{' optional_statement_list '}'
 ;
 
 jump_statement
-: BISON_KEYWORD_continue ";"
-| BISON_KEYWORD_break ";"
-| BISON_KEYWORD_return ";"
-| BISON_KEYWORD_return expression ";"
+: BISON_KEYWORD_continue ';'
+| BISON_KEYWORD_break ';'
+| BISON_KEYWORD_return ';'
+| BISON_KEYWORD_return expression ';'
 ;
 
  /* --------------------------------------------------------------------------- */
 
 export_statement
-: BISON_KEYWORD_export identifier_list ";"
+: BISON_KEYWORD_export identifier_list ';'
 ;
 
 identifier_list
 : BISON_SYM_IDENTIFIER
-| identifier_list "," BISON_SYM_IDENTIFIER
+| identifier_list ',' BISON_SYM_IDENTIFIER
 ;
 
 import_statement
-: BISON_KEYWORD_import import_item_list ";"
-| BISON_KEYWORD_import import_item BISON_KEYWORD_as BISON_SYM_IDENTIFIER ";"
+: BISON_KEYWORD_import import_item_list ';'
+| BISON_KEYWORD_import import_item BISON_KEYWORD_as BISON_SYM_IDENTIFIER ';'
 ;
 
 import_item_list
 : import_item
-| import_item_list "," import_item
+| import_item_list ',' import_item
 ;
 
 import_item
@@ -334,7 +334,7 @@ expression
 
 conditional_expression
 : logical_or_expression
-| logical_or_expression "?" conditional_expression ":" conditional_expression
+| logical_or_expression '?' conditional_expression ':' conditional_expression
 ;
 
 logical_or_expression
@@ -349,17 +349,17 @@ logical_and_expression
 
 inclusive_or_expression
 : exclusive_or_expression
-| inclusive_or_expression "|" exclusive_or_expression
+| inclusive_or_expression '|' exclusive_or_expression
 ;
 
 exclusive_or_expression
 : and_expression
-| exclusive_or_expression "^" and_expression
+| exclusive_or_expression '^' and_expression
 ;
 
 and_expression
 : equality_expression
-| and_expression "&" equality_expression
+| and_expression '&' equality_expression
 ;
 
 equality_expression
@@ -377,8 +377,8 @@ relational_expression
 ;
 
 relational_operator
-: "<"
-| ">"
+: '<'
+| '>'
 | BISON_OP_LESS_EQUAL
 | BISON_OP_GREATER_EQUAL
 ;
@@ -399,7 +399,7 @@ additive_expression
 ;
 
 additive_operator
-: "+" | "-"
+: '+' | '-'
 ;
 
 multiplicative_expression
@@ -408,9 +408,9 @@ multiplicative_expression
 ;
 
 multiplicative_operator
-: "*"
-| "/"
-| "%"
+: '*'
+| '/'
+| '%'
 ;
 
 unary_expression
@@ -435,11 +435,11 @@ logical_unary_operator : '!'
 
 postfix_expression
 : variable
-| "(" expression ")"
+| '(' expression ')'
 | lambda
 | nested_name_specifier BISON_SYM_IDENTIFIER
-| postfix_expression "(" expression_or_braced_initializer_list ")"
-| postfix_expression "(" ")"
+| postfix_expression '(' expression_or_braced_initializer_list ')'
+| postfix_expression '(' ')'
 ;
 
 lambda
@@ -447,7 +447,7 @@ lambda
 ;
 
 function_declaration
-: BISON_KEYWORD_func "(" function_declaration_parameter_list ")"
+: BISON_KEYWORD_func '(' function_declaration_parameter_list ')'
 ;
 
 function_declaration_parameter_list
@@ -458,8 +458,8 @@ function_declaration_parameter_list
 expression_or_braced_initializer_list
 : expression
 | braced_initializer
-| expression_or_braced_initializer_list "," expression
-| expression_or_braced_initializer_list "," braced_initializer
+| expression_or_braced_initializer_list ',' expression
+| expression_or_braced_initializer_list ',' braced_initializer
 ;
 
 constant
@@ -471,7 +471,7 @@ constant
  /* --------------------------------------------------------------------------- */
 
 enum_declaration
-: BISON_KEYWORD_enum "{" optional_enum_member_list "}"
+: BISON_KEYWORD_enum '{' optional_enum_member_list '}'
 ;
 
 optional_enum_member_list
@@ -483,14 +483,14 @@ optional_enum_member_list
 enum_member_list
 : BISON_SYM_IDENTIFIER
 | BISON_SYM_IDENTIFIER '=' BISON_INTEGER
-| enum_member_list "," BISON_SYM_IDENTIFIER
-| enum_member_list "," BISON_SYM_IDENTIFIER "=" BISON_INTEGER
+| enum_member_list ',' BISON_SYM_IDENTIFIER
+| enum_member_list ',' BISON_SYM_IDENTIFIER '=' BISON_INTEGER
 ;
 
  /* --------------------------------------------------------------------------- */
 
 struct_definition
-: BISON_KEYWORD_struct BISON_SYM_IDENTIFIER "{" optional_struct_member_list "}"
+: BISON_KEYWORD_struct BISON_SYM_IDENTIFIER '{' optional_struct_member_list '}'
 ;
 
 optional_struct_member_list
