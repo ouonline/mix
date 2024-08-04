@@ -1,7 +1,6 @@
 %{
 #include "lex.h"
 #include <stdio.h>
-#include <stdlib.h> // exit()
 #include "logger/logger.h"
 
 #include "mix.tab.h"
