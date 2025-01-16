@@ -2,7 +2,7 @@ var f = func (i, f) {
     return i + f + tmp;
 };
 
-let g = func (k) {};
+var g = func (k) {};
 
 var tmp = FuncCall(func (a, b) {}, func (a, b) { return other_type; });
 

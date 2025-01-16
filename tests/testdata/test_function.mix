@@ -1,4 +1,4 @@
-let Echo = func (i) {
+var Echo = func (i) {
 };
 
 func Echo(i) {}

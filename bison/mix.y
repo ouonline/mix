@@ -49,7 +49,6 @@ static const int g_m2b_type[] = {
     BISON_KEYWORD_if,
     BISON_KEYWORD_import,
     BISON_KEYWORD_in,
-    BISON_KEYWORD_let,
     BISON_KEYWORD_return,
     BISON_KEYWORD_self,
     BISON_KEYWORD_var,
@@ -133,7 +132,6 @@ static void yyerror(struct mix_lex* lex, struct logger* l, const char *msg) {
 %token BISON_KEYWORD_if
 %token BISON_KEYWORD_import
 %token BISON_KEYWORD_in
-%token BISON_KEYWORD_let
 %token BISON_KEYWORD_return
 %token BISON_KEYWORD_self
 %token BISON_KEYWORD_var
@@ -179,7 +177,6 @@ static void yyerror(struct mix_lex* lex, struct logger* l, const char *msg) {
 %type <token> BISON_KEYWORD_if
 %type <token> BISON_KEYWORD_import
 %type <token> BISON_KEYWORD_in
-%type <token> BISON_KEYWORD_let
 %type <token> BISON_KEYWORD_return
 %type <token> BISON_KEYWORD_self
 %type <token> BISON_KEYWORD_var
@@ -216,7 +213,6 @@ statement
 
 variable_declaration_statement
 : BISON_KEYWORD_var variable_declaration_list ';'
-| BISON_KEYWORD_let variable_declaration_list ';'
 ;
 
 assignment_statement
