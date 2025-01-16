@@ -1,6 +1,6 @@
 #include "utils.h"
 #include "lex.h"
-#include "logger/stdio_logger.h"
+#include "logger/stdout_logger.h"
 #include "mix.tab.h"
 
 int main(int argc, char* argv[]) {
@@ -11,8 +11,8 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    struct stdio_logger logger;
-    stdio_logger_init(&logger);
+    struct stdout_logger logger;
+    stdout_logger_init(&logger);
 
     uint32_t file_sz = 0;
     char* buf = read_file_content(argv[1], &file_sz);
@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
     free(buf);
     mix_lex_destroy(&lex);
 end:
-    stdio_logger_destroy(&logger);
+    stdout_logger_destroy(&logger);
 
     return ret;
 }
