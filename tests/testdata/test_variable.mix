@@ -3,3 +3,4 @@ var c = MyType::SubType::f();
 (123);
 (b());
 (c())[k] = value;
+a.b.c.d;

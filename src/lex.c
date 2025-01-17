@@ -443,10 +443,6 @@ mix_token_type_t mix_lex_get_next_token(struct mix_lex* lex, union mix_token_inf
                 }
                 break;
             }
-            case '.': {
-                forward(lex);
-                break;
-            }
             default: {
                 if (isalpha(c) || c == '_') {
                     return parse_identifier(lex, token);
