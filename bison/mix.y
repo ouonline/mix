@@ -39,7 +39,6 @@ static const int g_m2b_type[] = {
     BISON_KEYWORD_as,
     BISON_KEYWORD_break,
     BISON_KEYWORD_continue,
-    BISON_KEYWORD_do,
     BISON_KEYWORD_else,
     BISON_KEYWORD_export,
     BISON_KEYWORD_for,
@@ -119,7 +118,6 @@ static void yyerror(struct mix_lex* lex, struct logger* l, const char *msg) {
 %token BISON_KEYWORD_as
 %token BISON_KEYWORD_break
 %token BISON_KEYWORD_continue
-%token BISON_KEYWORD_do
 %token BISON_KEYWORD_else
 %token BISON_KEYWORD_export
 %token BISON_KEYWORD_for
@@ -161,7 +159,6 @@ static void yyerror(struct mix_lex* lex, struct logger* l, const char *msg) {
 %type <token> BISON_KEYWORD_as
 %type <token> BISON_KEYWORD_break
 %type <token> BISON_KEYWORD_continue
-%type <token> BISON_KEYWORD_do
 %type <token> BISON_KEYWORD_else
 %type <token> BISON_KEYWORD_export
 %type <token> BISON_KEYWORD_for
@@ -245,7 +242,6 @@ selection_statement
 
 iteration_statement
 : BISON_KEYWORD_while expression compound_statement
-| BISON_KEYWORD_do compound_statement BISON_KEYWORD_while expression ';'
 | BISON_KEYWORD_for BISON_SYM_IDENTIFIER BISON_KEYWORD_in expression compound_statement
 ;
 

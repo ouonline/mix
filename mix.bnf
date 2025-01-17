@@ -37,7 +37,6 @@
                         | "if" <expression> <compound_statement> "else" <compound_statement>
 
 <iteration_statement> ::= "while" <expression> <compound_statement>
-                        | "do" <compound_statement> "while" <expression> ";"
                         | "for" <identifier> "in" <expression> <compound_statement>
 
 <compound_statement> ::= "{" <optional_statement_list> "}"
