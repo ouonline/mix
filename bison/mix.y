@@ -38,7 +38,6 @@ static const int g_m2b_type[] = {
 
     BISON_KEYWORD_as,
     BISON_KEYWORD_break,
-    BISON_KEYWORD_class,
     BISON_KEYWORD_continue,
     BISON_KEYWORD_do,
     BISON_KEYWORD_else,
@@ -121,7 +120,6 @@ static void yyerror(struct mix_lex* lex, struct logger* l, const char *msg) {
 
 %token BISON_KEYWORD_as
 %token BISON_KEYWORD_break
-%token BISON_KEYWORD_class
 %token BISON_KEYWORD_continue
 %token BISON_KEYWORD_do
 %token BISON_KEYWORD_else
@@ -166,7 +164,6 @@ static void yyerror(struct mix_lex* lex, struct logger* l, const char *msg) {
 
 %type <token> BISON_KEYWORD_as
 %type <token> BISON_KEYWORD_break
-%type <token> BISON_KEYWORD_class
 %type <token> BISON_KEYWORD_continue
 %type <token> BISON_KEYWORD_do
 %type <token> BISON_KEYWORD_else
@@ -207,7 +204,6 @@ statement
 | import_statement
 | compound_statement
 | enum_declaration
-| class_definition
 | function_definition
 ;
 
@@ -450,36 +446,6 @@ enum_member_list
 | BISON_SYM_IDENTIFIER '=' BISON_INTEGER
 | enum_member_list ',' BISON_SYM_IDENTIFIER
 | enum_member_list ',' BISON_SYM_IDENTIFIER '=' BISON_INTEGER
-;
-
-/* --------------------------------------------------------------------------- */
-
-class_definition
-: BISON_KEYWORD_class BISON_SYM_IDENTIFIER '{' optional_class_member_list '}'
-;
-
-optional_class_member_list
-: %empty
-| optional_class_member_list class_member
-;
-
-class_member
-: member_function_definition
-| variable_declaration_statement
-;
-
-member_function_definition
-: member_function_declaration compound_statement
-;
-
-member_function_declaration
-: BISON_KEYWORD_func BISON_SYM_IDENTIFIER '(' member_function_parameter_list ')'
-;
-
-member_function_parameter_list
-: BISON_KEYWORD_self
-| BISON_KEYWORD_self ',' identifier_list
-| optional_identifier_list
 ;
 
 /* --------------------------------------------------------------------------- */
