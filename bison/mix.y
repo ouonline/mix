@@ -197,7 +197,6 @@ statement
 | jump_statement
 | import_statement
 | compound_statement
-| function_definition
 ;
 
 variable_declaration_statement
@@ -420,16 +419,6 @@ constant
 : BISON_INTEGER
 | BISON_FLOAT
 | BISON_LITERAL_STRING
-;
-
-/* --------------------------------------------------------------------------- */
-
-function_definition
-: function_declaration compound_statement
-;
-
-function_declaration
-: BISON_KEYWORD_func BISON_SYM_IDENTIFIER '(' optional_identifier_list ')'
 ;
 
 /* --------------------------------------------------------------------------- */

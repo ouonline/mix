@@ -15,7 +15,6 @@
               | <jump_statement>
               | <import_statement>
               | <compound_statement>
-              | <function_definition>
 
 <variable_declaration_statement> ::= "var" <variable_declaration_list> ";"
 
@@ -139,12 +138,6 @@
 <constant> ::= <integer>
              | <floating_point>
              | <literal_string>
-
-; --------------------------------------------------------------------------- ;
-
-<function_definition> ::= <function_declaration> <compound_statement>
-
-<function_declaration> ::= "func" <identifier> "(" <optional_identifier_list> ")"
 
 ; --------------------------------------------------------------------------- ;
 
