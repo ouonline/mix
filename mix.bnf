@@ -16,11 +16,9 @@
               | <import_statement>
               | <compound_statement>
               | <enum_declaration>
-              | <class_definition>
               | <function_definition>
 
 <variable_declaration_statement> ::= "var" <variable_declaration_list> ";"
-                                   | "let" <variable_declaration_list> ";"
 
 <assignment_statement> ::= <variable> <assignment_operator> <expression> ";"
 
@@ -155,24 +153,6 @@
                      | <identifier> '=' <integer>
                      | <enum_member_list> "," <identifier>
                      | <enum_member_list> "," <identifier> "=" <integer>
-
-; --------------------------------------------------------------------------- ;
-
-<class_definition> ::= "class" <identifier> "{" <optional_class_member_list> "}"
-
-<optional_class_member_list> ::= ""
-                               | <optional_class_member_list> <class_member>
-
-<class_member> ::= <member_function_definition>
-                 | <variable_declaration_statement>
-
-<member_function_definition> ::= <member_function_declaration> <compound_statement>
-
-<member_function_declaration> ::= "func" <identifier> "(" <member_function_parameter_list> ")"
-
-<member_function_parameter_list> ::= "self"
-                                   | "self" "," <identifier_list>
-                                   | <optional_identifier_list>
 
 ; --------------------------------------------------------------------------- ;
 
