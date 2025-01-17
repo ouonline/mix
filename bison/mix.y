@@ -49,7 +49,6 @@ static const int g_m2b_type[] = {
     BISON_KEYWORD_import,
     BISON_KEYWORD_in,
     BISON_KEYWORD_return,
-    BISON_KEYWORD_self,
     BISON_KEYWORD_var,
     BISON_KEYWORD_while,
 };
@@ -131,7 +130,6 @@ static void yyerror(struct mix_lex* lex, struct logger* l, const char *msg) {
 %token BISON_KEYWORD_import
 %token BISON_KEYWORD_in
 %token BISON_KEYWORD_return
-%token BISON_KEYWORD_self
 %token BISON_KEYWORD_var
 %token BISON_KEYWORD_while
 
@@ -175,7 +173,6 @@ static void yyerror(struct mix_lex* lex, struct logger* l, const char *msg) {
 %type <token> BISON_KEYWORD_import
 %type <token> BISON_KEYWORD_in
 %type <token> BISON_KEYWORD_return
-%type <token> BISON_KEYWORD_self
 %type <token> BISON_KEYWORD_var
 %type <token> BISON_KEYWORD_while
 

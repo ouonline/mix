@@ -46,7 +46,6 @@ enum {
     MIX_TT_KEYWORD_import,
     MIX_TT_KEYWORD_in,
     MIX_TT_KEYWORD_return,
-    MIX_TT_KEYWORD_self,
     MIX_TT_KEYWORD_var,
     MIX_TT_KEYWORD_while,
 };
