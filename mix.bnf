@@ -15,7 +15,6 @@
               | <jump_statement>
               | <import_statement>
               | <compound_statement>
-              | <enum_declaration>
               | <function_definition>
 
 <variable_declaration_statement> ::= "var" <variable_declaration_list> ";"
@@ -140,19 +139,6 @@
 <constant> ::= <integer>
              | <floating_point>
              | <literal_string>
-
-; --------------------------------------------------------------------------- ;
-
-<enum_declaration> ::= "enum" "{" <optional_enum_member_list> "}"
-
-<optional_enum_member_list> ::= ""
-                              | <enum_member_list>
-                              | <enum_member_list> ','
-
-<enum_member_list> ::= <identifier>
-                     | <identifier> '=' <integer>
-                     | <enum_member_list> "," <identifier>
-                     | <enum_member_list> "," <identifier> "=" <integer>
 
 ; --------------------------------------------------------------------------- ;
 

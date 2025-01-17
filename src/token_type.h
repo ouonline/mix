@@ -38,7 +38,6 @@ enum {
     MIX_TT_KEYWORD_continue,
     MIX_TT_KEYWORD_do,
     MIX_TT_KEYWORD_else,
-    MIX_TT_KEYWORD_enum,
     MIX_TT_KEYWORD_export,
     MIX_TT_KEYWORD_for,
     MIX_TT_KEYWORD_func,

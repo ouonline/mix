@@ -20,7 +20,6 @@ static const struct keyword_info g_keyword[] = {
     {"continue", 8, MIX_TT_KEYWORD_continue},
     {"do", 2, MIX_TT_KEYWORD_do},
     {"else", 4, MIX_TT_KEYWORD_else},
-    {"enum", 4, MIX_TT_KEYWORD_enum},
     {"export", 6, MIX_TT_KEYWORD_export},
     {"for", 3, MIX_TT_KEYWORD_for},
     {"func", 4, MIX_TT_KEYWORD_func},

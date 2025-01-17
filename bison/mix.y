@@ -41,7 +41,6 @@ static const int g_m2b_type[] = {
     BISON_KEYWORD_continue,
     BISON_KEYWORD_do,
     BISON_KEYWORD_else,
-    BISON_KEYWORD_enum,
     BISON_KEYWORD_export,
     BISON_KEYWORD_for,
     BISON_KEYWORD_func,
@@ -122,7 +121,6 @@ static void yyerror(struct mix_lex* lex, struct logger* l, const char *msg) {
 %token BISON_KEYWORD_continue
 %token BISON_KEYWORD_do
 %token BISON_KEYWORD_else
-%token BISON_KEYWORD_enum
 %token BISON_KEYWORD_export
 %token BISON_KEYWORD_for
 %token BISON_KEYWORD_func
@@ -165,7 +163,6 @@ static void yyerror(struct mix_lex* lex, struct logger* l, const char *msg) {
 %type <token> BISON_KEYWORD_continue
 %type <token> BISON_KEYWORD_do
 %type <token> BISON_KEYWORD_else
-%type <token> BISON_KEYWORD_enum
 %type <token> BISON_KEYWORD_export
 %type <token> BISON_KEYWORD_for
 %type <token> BISON_KEYWORD_func
@@ -200,7 +197,6 @@ statement
 | jump_statement
 | import_statement
 | compound_statement
-| enum_declaration
 | function_definition
 ;
 
@@ -424,25 +420,6 @@ constant
 : BISON_INTEGER
 | BISON_FLOAT
 | BISON_LITERAL_STRING
-;
-
-/* --------------------------------------------------------------------------- */
-
-enum_declaration
-: BISON_KEYWORD_enum '{' optional_enum_member_list '}'
-;
-
-optional_enum_member_list
-: %empty
-| enum_member_list
-| enum_member_list ','
-;
-
-enum_member_list
-: BISON_SYM_IDENTIFIER
-| BISON_SYM_IDENTIFIER '=' BISON_INTEGER
-| enum_member_list ',' BISON_SYM_IDENTIFIER
-| enum_member_list ',' BISON_SYM_IDENTIFIER '=' BISON_INTEGER
 ;
 
 /* --------------------------------------------------------------------------- */
