@@ -34,7 +34,6 @@ static const int g_m2b_type[] = {
     BISON_OP_RSHIFT,
 
     BISON_SYM_IDENTIFIER,
-    BISON_SYM_SCOPE_SPECIFIER,
 
     BISON_KEYWORD_as,
     BISON_KEYWORD_break,
@@ -113,7 +112,6 @@ static void yyerror(struct mix_lex* lex, struct logger* l, const char *msg) {
 %token BISON_OP_RSHIFT
 
 %token BISON_SYM_IDENTIFIER
-%token BISON_SYM_SCOPE_SPECIFIER
 
 %token BISON_KEYWORD_as
 %token BISON_KEYWORD_break
@@ -154,7 +152,6 @@ static void yyerror(struct mix_lex* lex, struct logger* l, const char *msg) {
 %type <token> BISON_OP_RSHIFT
 
 %type <token> BISON_SYM_IDENTIFIER
-%type <token> BISON_SYM_SCOPE_SPECIFIER
 
 %type <token> BISON_KEYWORD_as
 %type <token> BISON_KEYWORD_break
@@ -278,8 +275,8 @@ import_item
 ;
 
 nested_name_specifier
-: BISON_SYM_IDENTIFIER BISON_SYM_SCOPE_SPECIFIER
-| nested_name_specifier BISON_SYM_IDENTIFIER BISON_SYM_SCOPE_SPECIFIER
+: BISON_SYM_IDENTIFIER '.'
+| nested_name_specifier BISON_SYM_IDENTIFIER '.'
 ;
 
 /* --------------------------------------------------------------------------- */
@@ -393,7 +390,6 @@ postfix_expression
 : variable
 | '(' expression ')'
 | lambda
-| nested_name_specifier BISON_SYM_IDENTIFIER
 | postfix_expression '(' expression_list ')'
 | postfix_expression '(' ')'
 ;

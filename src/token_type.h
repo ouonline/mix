@@ -31,7 +31,6 @@ enum {
     MIX_TT_OP_RSHIFT,               /* >> */
 
     MIX_TT_SYM_IDENTIFIER,          /* */
-    MIX_TT_SYM_SCOPE_SPECIFIER,     /* :: */
 
     MIX_TT_KEYWORD_as,
     MIX_TT_KEYWORD_break,

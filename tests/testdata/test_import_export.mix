@@ -1,6 +1,6 @@
 import stdio;
 import stdio, math;
-import std::math as math;
+import std.math as math;
 import stdio as io;
 
 export foobar;

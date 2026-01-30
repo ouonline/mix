@@ -8,7 +8,6 @@ while x != f() {
 
 for i in vec {
     i += a.f();
-    i += a::y();
 }
 
 while 1 {

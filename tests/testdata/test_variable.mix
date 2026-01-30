@@ -1,4 +1,4 @@
-var c = MyType::SubType::f();
+var c = MyType.SubType.f();
 
 (123);
 (b());

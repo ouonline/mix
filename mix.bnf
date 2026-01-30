@@ -59,8 +59,8 @@
 <import_item> ::= <identifier>
                 | <nested_name_specifier> <identifier>
 
-<nested_name_specifier> ::= <identifier> "::"
-                          | <nested_name_specifier> <identifier> "::"
+<nested_name_specifier> ::= <identifier> "."
+                          | <nested_name_specifier> <identifier> "."
 
 ; --------------------------------------------------------------------------- ;
 
@@ -123,7 +123,6 @@
 <postfix_expression> ::= <variable>
                        | "(" <expression> ")"
                        | <lambda>
-                       | <nested_name_specifier> <identifier>
                        | <postfix_expression> "(" <expression_list> ")"
                        | <postfix_expression> "(" ")"
 

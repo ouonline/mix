@@ -432,16 +432,6 @@ mix_token_type_t mix_lex_get_next_token(struct mix_lex* lex, union mix_token_inf
                 }
                 break;
             }
-            case ':': {
-                forward(lex);
-                if (current(lex) == ':') {
-                    token->s.base = lex->cursor - 2;
-                    token->s.size = 2;
-                    forward(lex);
-                    return MIX_TT_SYM_SCOPE_SPECIFIER;
-                }
-                break;
-            }
             default: {
                 if (isalpha(c) || c == '_') {
                     return parse_identifier(lex, token);
