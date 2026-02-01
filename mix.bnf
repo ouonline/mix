@@ -6,8 +6,10 @@
 
 ; --------------------------------------------------------------------------- ;
 
-<statement> ::= ";"
-              | <expression> ";"
+<statement_terminator> ::= ";"
+
+<statement> ::= <statement_terminator>
+              | <expression> <statement_terminator>
               | <variable_declaration_statement>
               | <assignment_statement>
               | <selection_statement>
@@ -16,9 +18,9 @@
               | <import_statement>
               | <compound_statement>
 
-<variable_declaration_statement> ::= "var" <variable_declaration_list> ";"
+<variable_declaration_statement> ::= "var" <variable_declaration_list> <statement_terminator>
 
-<assignment_statement> ::= <variable> <assignment_operator> <expression> ";"
+<assignment_statement> ::= <variable> <assignment_operator> <expression> <statement_terminator>
 
 <variable> ::= <identifier>
              | <postfix_expression> "[" <expression> "]"
@@ -41,17 +43,17 @@
 
 <compound_statement> ::= "{" <optional_statement_list> "}"
 
-<jump_statement> ::= "continue" ";"
-                   | "break" ";"
-                   | "return" ";"
-                   | "return" <expression> ";"
+<jump_statement> ::= "continue" <statement_terminator>
+                   | "break" <statement_terminator>
+                   | "return" <statement_terminator>
+                   | "return" <expression> <statement_terminator>
 
 ; --------------------------------------------------------------------------- ;
 
-<export_statement> ::= "export" <identifier_list> ";"
+<export_statement> ::= "export" <identifier_list> <statement_terminator>
 
-<import_statement> ::= "import" <import_item_list> ";"
-                     | "import" <import_item> "as" <identifier> ";"
+<import_statement> ::= "import" <import_item_list> <statement_terminator>
+                     | "import" <import_item> "as" <identifier> <statement_terminator>
 
 <import_item_list> ::= <import_item>
                      | <import_item_list> "," <import_item>

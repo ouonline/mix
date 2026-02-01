@@ -181,9 +181,13 @@ optional_statement_list
 
 /* --------------------------------------------------------------------------- */
 
-statement
+statement_terminator
 : ';'
-| expression ';'
+;
+
+statement
+: statement_terminator
+| expression statement_terminator
 | variable_declaration_statement
 | assignment_statement
 | selection_statement
@@ -194,11 +198,11 @@ statement
 ;
 
 variable_declaration_statement
-: BISON_KEYWORD_var variable_declaration_list ';'
+: BISON_KEYWORD_var variable_declaration_list statement_terminator
 ;
 
 assignment_statement
-: variable assignment_operator expression ';'
+: variable assignment_operator expression statement_terminator
 ;
 
 variable
@@ -247,21 +251,21 @@ compound_statement
 ;
 
 jump_statement
-: BISON_KEYWORD_continue ';'
-| BISON_KEYWORD_break ';'
-| BISON_KEYWORD_return ';'
-| BISON_KEYWORD_return expression ';'
+: BISON_KEYWORD_continue statement_terminator
+| BISON_KEYWORD_break statement_terminator
+| BISON_KEYWORD_return statement_terminator
+| BISON_KEYWORD_return expression statement_terminator
 ;
 
 /* --------------------------------------------------------------------------- */
 
 export_statement
-: BISON_KEYWORD_export identifier_list ';'
+: BISON_KEYWORD_export identifier_list statement_terminator
 ;
 
 import_statement
-: BISON_KEYWORD_import import_item_list ';'
-| BISON_KEYWORD_import import_item BISON_KEYWORD_as BISON_SYM_IDENTIFIER ';'
+: BISON_KEYWORD_import import_item_list statement_terminator
+| BISON_KEYWORD_import import_item BISON_KEYWORD_as BISON_SYM_IDENTIFIER statement_terminator
 ;
 
 import_item_list
