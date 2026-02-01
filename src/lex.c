@@ -25,6 +25,7 @@ static const struct keyword_info g_keyword[] = {
     {"if", 2, MIX_TT_KEYWORD_if},
     {"import", 6, MIX_TT_KEYWORD_import},
     {"in", 2, MIX_TT_KEYWORD_in},
+    {"nil", 3, MIX_TT_KEYWORD_nil},
     {"return", 6, MIX_TT_KEYWORD_return},
     {"var", 3, MIX_TT_KEYWORD_var},
     {"while", 5, MIX_TT_KEYWORD_while},

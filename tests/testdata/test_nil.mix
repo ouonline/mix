@@ -1,0 +1,2 @@
+var abc = nil;
+var f = func(i, f) { return nil; };

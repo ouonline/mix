@@ -5,10 +5,9 @@
 
 /* mix token type => bison token type */
 static const int g_m2b_type[] = {
-    YYUNDEF,
-    YYEOF,
-
     0, /* MIX_TT_CHAR */
+    BISON_SYM_IDENTIFIER,
+
     BISON_LITERAL_STRING,
     BISON_INTEGER,
     BISON_FLOAT,
@@ -33,8 +32,6 @@ static const int g_m2b_type[] = {
     BISON_OP_LSHIFT,
     BISON_OP_RSHIFT,
 
-    BISON_SYM_IDENTIFIER,
-
     BISON_KEYWORD_as,
     BISON_KEYWORD_break,
     BISON_KEYWORD_continue,
@@ -45,21 +42,20 @@ static const int g_m2b_type[] = {
     BISON_KEYWORD_if,
     BISON_KEYWORD_import,
     BISON_KEYWORD_in,
+    BISON_KEYWORD_nil,
     BISON_KEYWORD_return,
     BISON_KEYWORD_var,
     BISON_KEYWORD_while,
+
+    YYEOF,
+    YYUNDEF,
 };
 
 static int yylex(YYSTYPE* lvalp, struct mix_lex* lex) {
     mix_token_type_t type = mix_lex_get_next_token(lex, &lvalp->token);
-    if (type == MIX_TT_EOF) {
-        return YYEOF;
-    }
-
     if (type == MIX_TT_CHAR) {
         return lvalp->token.c;
     }
-
     return g_m2b_type[type];
 }
 
@@ -123,6 +119,7 @@ static void yyerror(struct mix_lex* lex, struct logger* l, const char *msg) {
 %token BISON_KEYWORD_if
 %token BISON_KEYWORD_import
 %token BISON_KEYWORD_in
+%token BISON_KEYWORD_nil
 %token BISON_KEYWORD_return
 %token BISON_KEYWORD_var
 %token BISON_KEYWORD_while
@@ -163,6 +160,7 @@ static void yyerror(struct mix_lex* lex, struct logger* l, const char *msg) {
 %type <token> BISON_KEYWORD_if
 %type <token> BISON_KEYWORD_import
 %type <token> BISON_KEYWORD_in
+%type <token> BISON_KEYWORD_nil
 %type <token> BISON_KEYWORD_return
 %type <token> BISON_KEYWORD_var
 %type <token> BISON_KEYWORD_while
@@ -415,6 +413,7 @@ constant
 : BISON_INTEGER
 | BISON_FLOAT
 | BISON_LITERAL_STRING
+| BISON_KEYWORD_nil
 ;
 
 /* --------------------------------------------------------------------------- */

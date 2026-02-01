@@ -2,10 +2,9 @@
 #define __MIX_TOKEN_TYPE_H__
 
 enum {
-    MIX_TT_INVALID = 0,
-    MIX_TT_EOF,
-
     MIX_TT_CHAR,
+    MIX_TT_SYM_IDENTIFIER,
+
     MIX_TT_LITERAL_STRING,
     MIX_TT_INTEGER,
     MIX_TT_FLOAT,
@@ -30,8 +29,6 @@ enum {
     MIX_TT_OP_LSHIFT,               /* << */
     MIX_TT_OP_RSHIFT,               /* >> */
 
-    MIX_TT_SYM_IDENTIFIER,          /* */
-
     MIX_TT_KEYWORD_as,
     MIX_TT_KEYWORD_break,
     MIX_TT_KEYWORD_continue,
@@ -42,9 +39,13 @@ enum {
     MIX_TT_KEYWORD_if,
     MIX_TT_KEYWORD_import,
     MIX_TT_KEYWORD_in,
+    MIX_TT_KEYWORD_nil,
     MIX_TT_KEYWORD_return,
     MIX_TT_KEYWORD_var,
     MIX_TT_KEYWORD_while,
+
+    MIX_TT_EOF,
+    MIX_TT_INVALID,
 };
 
 typedef unsigned int mix_token_type_t;
