@@ -392,8 +392,7 @@ postfix_expression
 : variable
 | '(' expression ')'
 | lambda
-| postfix_expression '(' expression_list ')'
-| postfix_expression '(' ')'
+| postfix_expression '(' optional_expression_list ')'
 ;
 
 lambda
@@ -402,6 +401,11 @@ lambda
 
 function_type
 : BISON_KEYWORD_func '(' optional_identifier_list ')'
+;
+
+optional_expression_list
+: %empty
+| expression_list
 ;
 
 expression_list

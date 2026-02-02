@@ -125,12 +125,14 @@
 <postfix_expression> ::= <variable>
                        | "(" <expression> ")"
                        | <lambda>
-                       | <postfix_expression> "(" <expression_list> ")"
-                       | <postfix_expression> "(" ")"
+                       | <postfix_expression> "(" <optional_expression_list> ")"
 
-<lambda> ::= <function_type> <compound_statement>
+<lambda> ::= <function_prototype> <compound_statement>
 
-<function_type> ::= "func" "(" <optional_identifier_list> ")"
+<function_prototype> ::= "func" "(" <optional_identifier_list> ")"
+
+<optional_expression_list> ::= ""
+                             | <expression_list>
 
 <expression_list> ::= <expression>
                     | <expression_list> "," <expression>
@@ -148,11 +150,11 @@
 <identifier_list> ::= <identifier>
                     | <identifier_list> "," <identifier>
 
-<identifier> ::= <character_of_identifier> <character_or_digit_sequence>
+<identifier> ::= <character_of_identifier> <optional_character_or_digit_sequence>
 
-<character_or_digit_sequence> ::= ""
-                                | <character_or_digit_sequence> <character_of_identifier>
-                                | <character_or_digit_sequence> <digit>
+<optional_character_or_digit_sequence> ::= ""
+                                         | <optional_character_or_digit_sequence> <character_of_identifier>
+                                         | <optional_character_or_digit_sequence> <digit>
 
 <character_of_identifier> ::= "_"
                             | "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m"
